@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: Account Service API
+  profiles:
+    active: h2
+server:
+  port: 8002
+
