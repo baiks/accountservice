@@ -44,20 +44,18 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public ResponseEntity<Accounts> create(Long customerId) {
-
         List<AccountSeq> accountSeqs = accountsSeqRepo.findAll();
-        AccountSeq accountseq = new AccountSeq();
+        AccountSeq accountseq;
         int accountSeq = 1;
         if (accountSeqs.size() != 0) {
+            accountseq = accountSeqs.get(0);
             accountSeq = accountSeqs.get(0).getSequence();
         } else {
-            accountseq = accountSeqs.get(0);
+            accountseq = new AccountSeq();
         }
         accountseq.setSequence(accountSeq);
         accountsSeqRepo.save(accountseq);
-
         String paddedAccountNumber = StringUtils.leftPad(String.valueOf(accountSeq), 10, '0');
-
         Optional<Accounts> res = accountsRepo.findByAccountNumber(paddedAccountNumber);
         if (res.isPresent()) {
             throw new CustomException("Duplicate account number detected");
