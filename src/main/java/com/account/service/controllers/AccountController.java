@@ -48,4 +48,18 @@ public class AccountController {
     public ResponseEntity<Accounts> close(@Valid @PathVariable Long id) {
         return accountService.close(id);
     }
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/activate/{id}")
+    @Operation(summary = "Activate account", description = "Returns the details of the activated account.\n" + "\n" + "Example Requests:\n")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "PATCH: /activate/1")})
+    public ResponseEntity<Accounts> activate(@Valid @PathVariable Long id) {
+        return accountService.activate(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/deactivate/{id}")
+    @Operation(summary = "De Activate", description = "Returns the details of the de activated.\n" + "\n" + "Example Requests:\n")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "PATCH: /deactivate/1")})
+    public ResponseEntity<Accounts> deActivate(@Valid @PathVariable Long id) {
+        return accountService.deActivate(id);
+    }
 }

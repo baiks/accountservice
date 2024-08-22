@@ -1,7 +1,6 @@
 package com.account.service.impl;
 
 
-import com.account.service.dtos.AccountsDto;
 import com.account.service.dtos.NotificationDto;
 import com.account.service.entities.AccountSeq;
 import com.account.service.entities.Accounts;
@@ -21,10 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Slf4j
@@ -96,6 +92,32 @@ public class AccountServiceImpl implements AccountService {
         }
         Accounts udaptedAccount = accounts.get();
         udaptedAccount.setClosed(true);
+        accountsRepo.save(udaptedAccount);
+        return new ResponseEntity<>(udaptedAccount, HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<Accounts> activate(Long id) {
+        Optional<Accounts> accounts = accountsRepo.findById(id);
+        if (!accounts.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        Accounts udaptedAccount = accounts.get();
+        udaptedAccount.setActive(true);
+        accountsRepo.save(udaptedAccount);
+        return new ResponseEntity<>(udaptedAccount, HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<Accounts> deActivate(Long id) {
+        Optional<Accounts> accounts = accountsRepo.findById(id);
+        if (!accounts.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        Accounts udaptedAccount = accounts.get();
+        udaptedAccount.setActive(false);
         accountsRepo.save(udaptedAccount);
         return new ResponseEntity<>(udaptedAccount, HttpStatus.OK);
 

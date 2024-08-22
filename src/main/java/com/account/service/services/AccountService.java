@@ -26,4 +26,8 @@ public interface AccountService {
      * @return
      */
     ResponseEntity<Accounts> close(Long id);
+
+    ResponseEntity<Accounts> activate(Long id);
+
+    ResponseEntity<Accounts> deActivate(Long id);
 }
