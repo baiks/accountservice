@@ -44,6 +44,10 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public ResponseEntity<Accounts> create(Long customerId) {
+        Optional<Customers> customers = customersRepo.findById(customerId);
+        if (!customers.isPresent()) {
+            throw new CustomException("Customer id not found");
+        }
         List<AccountSeq> accountSeqs = accountsSeqRepo.findAll();
         AccountSeq accountseq;
         int accountSeq = 1;
@@ -53,21 +57,16 @@ public class AccountServiceImpl implements AccountService {
         } else {
             accountseq = new AccountSeq();
         }
-        accountseq.setSequence(accountSeq);
-        accountsSeqRepo.save(accountseq);
+        accountseq.setSequence(accountSeq + 1);
         String paddedAccountNumber = StringUtils.leftPad(String.valueOf(accountSeq), 10, '0');
         Optional<Accounts> res = accountsRepo.findByAccountNumber(paddedAccountNumber);
         if (res.isPresent()) {
             throw new CustomException("Duplicate account number detected");
         }
-
+        accountsSeqRepo.save(accountseq);
         //Capture account
         Accounts accounts = new Accounts();
         accounts.setAccountNumber(paddedAccountNumber);
-        Optional<Customers> customers = customersRepo.findById(customerId);
-        if (!customers.isPresent()) {
-            throw new CustomException("Customer id not found");
-        }
         accounts.setCustomer(customers.get());
         accountsRepo.save(accounts);
 
