@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  account_service:
+  account-service:
     build:
       context: .
       dockerfile: Dockerfile
-    image: 682263059097.dkr.ecr.us-east-1.amazonaws.com/account_service
-    container_name: account_service
+    image: 682263059097.dkr.ecr.us-east-1.amazonaws.com/account-service
+    container_name: account-service
     ports:
       - "8002:8002"
     environment:
